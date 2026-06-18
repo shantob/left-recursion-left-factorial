@@ -1,0 +1,32 @@
+def solveNqueen(n=4):
+     solutions = []
+     
+     def place(row, board):
+         if row == n:                          # Base case: all queens are placed
+             solutions.append(board[:])        # FIX: store a copy, not the same list
+             return
+         for col in range(n):                  # try each column in this row
+             if all(col != board[i] and abs(col - board[i]) != abs(row - i) for i in range(row)):
+                 board.append(col)             # place queen
+                 place(row + 1, board)         # recurse to next row
+                 board.pop()                   # backtrack: remove queen, try next column
+     place(0, [])
+     return solutions
+ 
+# --- পরিবর্তনটি এখানে করা হয়েছে ---
+
+# ইউজারের কাছ থেকে N এর মান নেওয়া হচ্ছে
+n_input = int(input("Enter the number of Queens (N): "))
+
+# ফাংশন কল করা হচ্ছে
+all_solutions = solveNqueen(n_input)
+
+print(f"\nTotal solutions found: {len(all_solutions)}\n")
+
+# সমাধানগুলো প্রিন্ট করার লুপ
+for sol in all_solutions:
+    print("Solution: " + str(sol))
+    for col in sol:
+        # (n_input - 1 - col) ব্যবহার করায় যেকোনো সাইজের বোর্ডের জন্য এটি ঠিকঠাক কাজ করবে
+        print('_ ' * col + 'Q ' + '_ ' * (n_input - 1 - col))
+    print()
