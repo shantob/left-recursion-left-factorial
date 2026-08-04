@@ -1,0 +1,72 @@
+import heapq
+
+def solve_8_puzzle(start, goal="123456780"):
+    # 1. Check if the configuration is mathematically solvable
+    def is_solvable(state):
+        arr = [int(x) for x in state if x != '0']
+        inversions = sum(sum(1 for j in range(i + 1, len(arr)) if arr[i] > arr[j]) for i in range(len(arr)))
+        return inversions % 2 == 0
+
+    # 2. Smart Heuristic: Calculates distance of tiles from their target spots
+    def manhattan(state):
+        dist = 0
+        for i, char in enumerate(state):
+            if char != '0':
+                target_idx = int(char) - 1
+                dist += abs(i // 3 - target_idx // 3) + abs(i % 3 - target_idx % 3)
+        return dist
+
+    if not is_solvable(start):
+        return None
+
+    # Valid tile swapping map
+    moves = {
+        0: [1, 3],    1: [0, 2, 4], 2: [1, 5],
+        3: [0, 4, 6], 4: [1, 3, 5, 7], 5: [2, 4, 8],
+        6: [3, 7],    7: [4, 6, 8], 8: [5, 7]
+    }
+    
+    # Priority Queue stores: (total_estimated_cost, moves_made, current_state, path)
+    queue = [(manhattan(start), 0, start, [])]
+    visited = {start: 0}
+
+    while queue:
+        _, cost, state, path = heapq.heappop(queue)
+        
+        if state == goal:
+            return path
+            
+        if cost > visited.get(state, float('inf')):
+            continue
+            
+        zero_idx = state.index('0')
+        for next_idx in moves[zero_idx]:
+            state_list = list(state)
+            state_list[zero_idx], state_list[next_idx] = state_list[next_idx], state_list[zero_idx]
+            next_state = "".join(state_list)
+            
+            new_cost = cost + 1
+            if next_state not in visited or new_cost < visited[next_state]:
+                visited[next_state] = new_cost
+                total_est = new_cost + manhattan(next_state)
+                heapq.heappush(queue, (total_est, new_cost, next_state, path + [next_state]))
+                
+    return []
+
+# Helper function to print grids visually
+def print_grid(state_str):
+    print(f"[{state_str[0]} {state_str[1]} {state_str[2]}]\n[{state_str[3]} {state_str[4]} {state_str[5]}]\n[{state_str[6]} {state_str[7]} {state_str[8]}]\n")
+
+# Example: A highly complex start state that would freeze the old BFS code
+start_state = "867254301" 
+solution = solve_8_puzzle(start_state)
+
+if solution is None:
+    print("❌ This puzzle configuration is impossible to solve!")
+else:
+    print("Initial State:")
+    print_grid(start_state)
+    print(f"🎯 Solved perfectly in {len(solution)} moves!\n")
+    for step_num, state in enumerate(solution, 1):
+        print(f"Move #{step_num}:")
+        print_grid(state)
