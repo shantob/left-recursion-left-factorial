@@ -1,0 +1,56 @@
+# Breadth-First Search
+from collections import deque
+
+# Final Target
+GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+
+# Generates possible next moves
+def get_neighbors(state):
+    neighbors = []
+    i = state.index(0)
+    row, col = divmod(i, 3)
+
+    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # up, down, left, right
+    
+    # dr = change in row, dc = change in column
+    for dr, dc in moves:
+        r, c = row + dr, col + dc
+        if 0 <= r < 3 and 0 <= c < 3:
+            new_i = r * 3 + c
+            
+            # Create a new state by swapping the blank tile (0) with the adjacent tile
+            new_state = list(state)
+            
+            # Swap the blank tile with the adjacent tile
+            new_state[i], new_state[new_i] = new_state[new_i], new_state[i]
+            
+            # Add state to list of neighbors
+            neighbors.append(tuple(new_state))
+
+    return neighbors
+
+def bfs(start):
+    queue = deque([(start, [])])
+    visited = set()
+
+    while queue:
+        state, path = queue.popleft()
+
+        if state == GOAL_STATE:
+            return path + [state]
+
+        visited.add(state)
+
+        for neighbor in get_neighbors(state):
+            if neighbor not in visited:
+                queue.append((neighbor, path + [state]))
+
+    return None
+
+# Example
+start_state = (1, 2, 3, 4, 0, 5, 6, 7, 8)
+solution = bfs(start_state)
+
+print("BFS Solution:")
+for step in solution:
+    print(f"{step[0]} {step[1]} {step[2]}\n{step[3]} {step[4]} {step[5]}\n{step[6]} {step[7]} {step[8]}\n")
