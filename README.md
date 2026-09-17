@@ -10,3 +10,9 @@ Enter Non-Terminal: A
 Enter number of productions: 2
 Production 1: abc (এখানে কমন prefix = ab)
 Production 2: abd (এখানেও কমন prefix = ab)
+
+
+
+
+
+https://docs.google.com/document/d/1JH6AHmgK8nQ3k5M2k2DyQzK2YaK1iAo5xkcAhf7pumU/edit?usp=sharing
