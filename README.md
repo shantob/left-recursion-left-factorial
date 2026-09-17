@@ -16,3 +16,8 @@ Production 2: abd (এখানেও কমন prefix = ab)
 
 
 https://docs.google.com/document/d/1JH6AHmgK8nQ3k5M2k2DyQzK2YaK1iAo5xkcAhf7pumU/edit?usp=sharing
+
+
+
+
+https://docs.google.com/document/d/1z8mFF9MzL4J2G495qrf2gBX_K1GjWYCnlj4zK36ACH0/edit?usp=sharing
